@@ -1,0 +1,103 @@
+#include "ll1.h"
+#define true 1
+#define false 0
+
+int loopdetection(struct node*start)
+{
+    struct node*p,*q;
+    p=start;
+    q=start;
+    while(p!=NULL && p->next!=NULL)
+    {
+        q=q->next;
+        p=p->next->next;
+        if(p->data==q->data)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+struct node*loopstarting(struct node*start)
+{
+    struct node*p,*q;
+    p=start;
+    q=start;
+    while(p!=NULL && p->next!=NULL)
+    {
+        q=q->next;
+        p=p->next->next;
+        if(p->data==q->data)
+        {
+            break;
+        }
+    }
+    if(q!=p){
+        return NULL;
+    }
+    q=start;
+    while(q!=p){
+        q=q->next;
+        p=p->next;
+    }
+    return q;
+}
+
+int length(struct node *start,struct node*q)
+{
+    int count=1;
+    struct node*r=start;
+    struct node*p=q;
+    while(r!=q)
+    {
+        r=r->next;
+    }
+    while(r->next!=q)
+    {
+        count++;
+        r=r->next;
+    }
+    return count;
+}
+
+int main()
+{
+    struct node*start=NULL;
+    struct node*p,*q;
+    insend(&start,100);
+    insend(&start,200);
+    insend(&start,300);
+    insend(&start,400);
+    insend(&start,500);
+    insend(&start,600);
+    insend(&start,700);
+    p=start;
+    int c;
+    struct node*a;
+    while(p->next!=NULL)
+    {
+        p=p->next;
+    }
+    q=start;
+    while(q->data!=200)
+    {
+        q=q->next;
+    }
+    p->next=q;
+    if(loopdetection(start)==1)
+    {
+        printf("Loop Found");
+    }
+    else{
+        printf("Loop Not Found");
+    }
+    printf("\n\n");
+    printf("Starting Point Of Loop => ");
+    a=loopstarting(start);
+    printf("%d",a->data);
+    printf("\n\n");
+    c=length(start,a);
+    printf("Length Of Loop => %d",c);
+    printf("\n\n");
+}
